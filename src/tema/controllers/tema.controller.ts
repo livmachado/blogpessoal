@@ -2,7 +2,7 @@ import { Tema } from "../entities/tema.entity";
 import { TemaService } from "../services/tema.service";
 import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, ParseIntPipe, Post, Put } from '@nestjs/common';
 
-@Controller('/postagens')
+@Controller('/temas')
 export class TemaController {
   constructor(private readonly temaService: TemaService) {}
 
