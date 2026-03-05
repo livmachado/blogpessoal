@@ -1,6 +1,7 @@
 import { Transform, TransformFnParams } from 'class-transformer';
 import { IsNotEmpty, Length } from 'class-validator';
-import { Column, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { Tema } from '../../tema/entities/tema.entity';
 
 @Entity({ name: 'tb_postagens' })
 export class Postagem {
@@ -9,7 +10,7 @@ export class Postagem {
 
   @Transform(({ value }: TransformFnParams) => value?.trim())
   @IsNotEmpty({ message: 'O Título é Obrigatório. '})
-    @Length(5, 100, { message: "O Título deve ter entre 5 e 100 caracteres" })
+  @Length(5, 100, { message: "O Título deve ter entre 5 e 100 caracteres" })
   @Column({ length: 100, nullable: false })
   titulo: string;
 
@@ -22,8 +23,8 @@ export class Postagem {
   @UpdateDateColumn()
   data: Date;
 
-  //@ManyToOne( () => Tema, (tema)=> tema.postagem, {
-  //  onDelete:"CASCADE"
-  //})
-  //tema: Tema;
+  @ManyToOne( () => Tema, (tema)=> tema.postagem, {
+   onDelete:"CASCADE"
+  })
+  tema: Tema;
 }
