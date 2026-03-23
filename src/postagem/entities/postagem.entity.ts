@@ -1,37 +1,40 @@
-import { Transform, TransformFnParams } from 'class-transformer';
-import { IsNotEmpty, Length } from 'class-validator';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
-import { Tema } from '../../tema/entities/tema.entity';
-import { Usuario } from '../../usuario/entities/usuario.entity';
+import { ApiProperty } from "@nestjs/swagger";
+import { IsNotEmpty } from "class-validator";
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Tema } from "../../tema/entities/tema.entity";
+import { Usuario } from './../../usuario/entities/usuario.entity';
 
-@Entity({ name: 'tb_postagens' })
+@Entity({name: "tb_postagens"})
 export class Postagem {
-  @PrimaryGeneratedColumn()
-  id: number;
 
-  @Transform(({ value }: TransformFnParams) => value?.trim())
-  @IsNotEmpty({ message: 'O Título é Obrigatório. '})
-  @Length(5, 100, { message: "O Título deve ter entre 5 e 100 caracteres" })
-  @Column({ length: 100, nullable: false })
-  titulo: string;
+    @ApiProperty()  
+    @PrimaryGeneratedColumn()    
+    id: number
 
-  @Transform(({ value }: TransformFnParams) => value?.trim())
-  @IsNotEmpty({ message: 'O Texto é Obrigatório. '})
-  @Length(10, 1000, { message: "O Texto deve ter entre 10 e 1000 caracteres" })
-  @Column({ length: 1000, nullable: false })
-  texto: string;
+    @ApiProperty()  
+    @IsNotEmpty()
+    @Column({length: 100, nullable: false})
+    titulo: string
 
-  @UpdateDateColumn()
-  data: Date;
+    @ApiProperty()  
+    @IsNotEmpty()
+    @Column({length: 1000, nullable: false})
+    texto: string
 
-  @ManyToOne( () => Tema, (tema)=> tema.postagem, {
-   onDelete:"CASCADE"
-  })
-  tema: Tema;
-  
-  @ManyToOne( () => Usuario, (usuario)=> usuario.postagem, {
-   onDelete:"CASCADE"
-  })
-  usuario: Usuario;
+    @ApiProperty()  
+    @UpdateDateColumn()
+    data: Date
+    
+    @ApiProperty({ type: () => Tema })  
+    @ManyToOne(() => Tema, (tema) => tema.postagem, {
+        onDelete: "CASCADE"
+    })
+    tema: Tema
+
+    @ApiProperty({ type: () => Usuario })  
+    @ManyToOne(() => Usuario, (usuario) => usuario.postagem, {
+        onDelete: "CASCADE"
+    })
+    usuario: Usuario
 
 }
