@@ -6,12 +6,14 @@ import { AuthModule } from './auth/auth.module';
 import { UsuarioModule } from './usuario/usuario.module';
 import { AppController } from './app.controller';
 import { ConfigModule } from '@nestjs/config';
+import { DevService } from './data/services/dev.service';
 import { ProdService } from './data/services/prod.service';
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
     TypeOrmModule.forRootAsync({
+	    // useClass: DevService,
 	    useClass: ProdService,
       imports: [ConfigModule],
     }),
